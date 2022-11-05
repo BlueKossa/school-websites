@@ -400,6 +400,7 @@ function fixFunc(func) {
 
 // Keyboard support
 document.addEventListener("keydown", (e) => {
+  if (!(document.getElementById("x-width") !== document.activeElement && document.getElementById("y-width") !== document.activeElement)) return;
   // Switch case to determine allowed keys together with the corresponding function
   switch (e.key) {
     case "ArrowRight":
