@@ -131,7 +131,7 @@ function cursorMove(dir) {
 setInterval(() => {
   underscore = !underscore;
   updateScreen();
-}, 500);
+}, 300);
 
 // Function to handle generic button inputs
 function buttonClick(num) {
@@ -152,50 +152,65 @@ function buttonClick(num) {
 
 // Function to handle more complex buttons
 function functionClick(func) {
-  if (func === "CLEAR") {
-    // Clears the screen
-    screenData = "";
-    updateScreen();
-  } else if (func === "DEL" && newResult != true) {
-    // If cursormode is on
-    if (cursorMode) {
-      // If ans is going to be deleted, delete 3 characters
-      let x = 1;
-      if (screenData[cursorIndex - 1] === "s") x = 3;
-      // Delete the character at the cursor
-      screenData =
-        screenData.substring(0, cursorIndex - x) +
-        screenData.substring(cursorIndex);
-      // Move cursor accordingly
-      cursorIndex -= x;
-    } else {
-      // Deletes the last character, if the last feature is ans, delete three characters
-      if (screenData[screenData.length - 1] === "s") {
-        screenData = screenData.slice(0, -3);
-        return;
-      } else {
-        screenData = screenData.slice(0, -1);
+  switch (func) {
+    case "CLEAR":
+      {
+        // Clear the screen
+        screenData = "";
+        cursorMode = false;
+        cursorIndex = -1;
       }
-    }
-    updateScreen();
-  } else if (func === "RESULT") {
-    // Check if the calculator is in graph mode to see if it should calculate a result or draw a graph
-    if (graphState) {
-      calcGraph(screenData); // Draw graph
-    } else {
-      getResult(); // Calculate result
-    }
-  } else if (func === "GRAPHMODE") {
-    // Toggle between graph mode and normal mode
-    if (graphState) {
-      graphDiv.style.display = "none";
-      calcDiv.style.borderRadius = "5px";
-    } else {
-      graphDiv.style.display = "flex";
-      calcDiv.style.borderRadius = "5px 0 5px 5px";
-    }
-    graphState = !graphState;
+      break;
+    case "DEL":
+      {
+        // If cursormode is on
+        if (cursorMode) {
+          // If ans is going to be deleted, delete 3 characters
+          let x = 1;
+          if (screenData[cursorIndex - 1] === "s") x = 3;
+          // Delete the character at the cursor
+          screenData =
+            screenData.substring(0, cursorIndex - x) +
+            screenData.substring(cursorIndex);
+          // Move cursor accordingly
+          cursorIndex -= x;
+        } else {
+          // Deletes the last character, if the last feature is ans, delete three characters
+          if (screenData[screenData.length - 1] === "s") {
+            screenData = screenData.slice(0, -3);
+          } else {
+            screenData = screenData.slice(0, -1);
+          }
+        }
+      }
+      break;
+    case "RESULT":
+      {
+        // Check if the calculator is in graph mode to see if it should calculate a result or draw a graph
+        if (graphState) {
+          calcGraph(screenData); // Draw graph
+        } else {
+          getResult(); // Calculate result
+        }
+        cursorMode = false;
+        cursorIndex = -1;
+      }
+      break;
+    case "GRAPHMODE":
+      {
+        // Toggle between graph mode and normal mode
+        if (graphState) {
+          graphDiv.style.display = "none";
+          calcDiv.style.borderRadius = "5px";
+        } else {
+          graphDiv.style.display = "flex";
+          calcDiv.style.borderRadius = "5px 0 5px 5px";
+        }
+        graphState = !graphState;
+      }
+      break;
   }
+  updateScreen();
 }
 
 function getResult() {
