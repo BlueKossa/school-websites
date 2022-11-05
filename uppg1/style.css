@@ -1,0 +1,28 @@
+.logo {
+    border-radius: 50%;
+    width: 600px;
+}
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+html, body {
+    background-color: gray;
+    height: 100%;
+    margin: 0;
+}
+
+* {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 80px;
+}
+
+#secret {
+    margin-top: 1000px;
+}

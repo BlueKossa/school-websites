@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calc-body {
+  position: absolute;
+  padding: 10px;
+  width: 400px;
+  height: 600px;
+  background-color: #3d536a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.graph-body {
+  position: absolute;
+  right: -500px;
+  top: 0;
+  width: 500px;
+  height: 420px;
+  background-color: #3d536a;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 0 5px 5px 0;
+}
+
+.graph-screen {
+  width: 100%;
+  height: 340px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #a7a680;
+}
+
+.graph-buttons {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#x-width, #y-width {
+  width: 100px;
+}
+.x-width, .y-width {
+  margin: 5px;
+}
+
+.x-width > *, .y-width > * {
+  display: block;
+}
+
+#wasm-button {
+  position: absolute;
+  left: 10px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  font-size: 2rem;
+  text-align: center;
+  box-shadow: #2a3949 0 0 10px;
+}
+
+#wasm-button:hover {
+  box-shadow: #1b242e 0 0 12px;
+}
+
+.buttons {
+  height: 50%;
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.advanced-buttons {
+  height: 10%;
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.screen {
+  color: black;
+  font-size: 2rem;
+  font-family: "Calc";
+  height: 30%;
+  width: 90%;
+  background-color: #a7a680;
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  border-radius: 5px;
+}
+
+#calc-text {
+  width: 100%;
+  height: 65%;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-y: hidden;
+}
+
+#result-text {
+  width: 100%;
+  height: 20%;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  background-color: hsl(167, 5%, 62%);
+  border: 1px solid black;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.advanced {
+  background-color: hsl(44, 100%, 50%);
+}
+
+.button:hover {
+  background-color: hsl(167, 5%, 52%);
+}
+
+.advanced:hover {
+  background-color: hsl(44, 100%, 60%);
+}
+
+.close {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+#move {
+  position: absolute;
+  top: -4px;
+  left: 4px;
+  font-size: 2rem;
+  cursor: move;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+@font-face {
+  font-family: "Calc"; /*a name to be used later*/
+  src: url("assets/fonts/calcFont.ttf"); /*URL to font*/
+}

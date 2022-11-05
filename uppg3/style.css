@@ -1,0 +1,99 @@
+* { 
+    padding: 0; margin: 0; 
+    font-family: 'Comic Sans MS';
+}
+
+/* Body */
+body {
+    background: #f2f2f2;
+    background-color: #333;
+}
+
+/* Entire Container for all boxes */
+.container {
+    margin: 10px;
+    width: auto;
+    padding: 10px;
+    height: fit-content;
+    background-color: #71d4e6;
+}
+
+
+/* First Box */
+.container > :nth-child(2) {
+    background-color: hsl(271, 69%, 85%);
+}
+
+/* The sticky header of the first box */
+.container > :nth-child(2) > :nth-child(1) {
+    background-color: hsl(271, 69%, 75%);
+}
+
+/* Second box */
+.container > :nth-child(3) {
+    background-color: hsl(1, 69%, 85%);
+}
+
+
+/* The sticky header of the second box */
+.container > :nth-child(3) > :nth-child(1) {
+    background-color: hsl(1, 69%, 75%);
+}
+
+
+/* The third box */
+.container > :nth-child(4) {
+    background-color: hsl(91, 69%, 85%);
+}
+
+/* The sticky header of the third box */
+.container > :nth-child(4) > :nth-child(1) {
+    background-color: hsl(91, 69%, 75%);
+}
+
+/* Allign text to center for h1 and h2 elements */
+h2, h1 {
+    text-align: center;
+}
+
+/* Spinning smiley */
+.smiley {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    animation: spin 2s linear infinite;
+}
+
+/* Allign to left */
+.left {
+    left: 0;
+}
+
+/* Sticky class to make headers stick */
+.sticker {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 50px;
+}
+
+/* Animation for the smiley */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Disables selection */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

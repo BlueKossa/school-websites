@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="scripts/script.js" defer></script>
+    <script src="scripts/draggable.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div id="calc" class="calc-body noselect">
+          <div class="close" onclick="closeCalc();">&Cross;</div>
+          <div id="move">&equiv;</div>
+          <div id="screen" class="screen">
+            <div id="result-text"></div>
+            <div id="calc-text"></div>
+          </div>
+          <div class="buttons">
+            <div class="button" onclick="buttonClick(7);">7</div>
+            <div class="button" onclick="buttonClick(8);">8</div>
+            <div class="button" onclick="buttonClick(9);">9</div>
+            <div class="button" onclick="functionClick('DEL');">DEL</div>
+            <div class="button" onclick="functionClick('CLEAR');">AC</div>
+            <div class="button" onclick="buttonClick(4);">4</div>
+            <div class="button" onclick="buttonClick(5);">5</div>
+            <div class="button" onclick="buttonClick(6);">6</div>
+            <div class="button" onclick="buttonClick('*');">&times;</div>
+            <div class="button" onclick="buttonClick('/');">&divide;</div>
+            <div class="button" onclick="buttonClick(1);">1</div>
+            <div class="button" onclick="buttonClick(2);">2</div>
+            <div class="button" onclick="buttonClick(3);">3</div>
+            <div class="button" onclick="buttonClick('+');">&plus;</div>
+            <div class="button" onclick="buttonClick('-');">&minus;</div>
+            <div class="button" onclick="buttonClick(0);">0</div>
+            <div class="button" onclick="buttonClick('.');">.</div>
+            <div class="button" onclick="buttonClick('^');">^</div>
+            <div class="button" onclick="buttonClick('ans');">ANS</div>
+            <div class="button" onclick="functionClick('RESULT');">
+              &equals;
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
