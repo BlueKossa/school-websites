@@ -35,6 +35,9 @@ const allowedButtons = [
   "x",
 ];
 
+// List of operators that are not caught by NaN
+const notOperators = ["(", ")", "x", "ans", "e", "π"];
+
 // Boolean to see if the calculator screen should reset on the next input
 let newResult = true;
 // String for the data that is currently on the screen
@@ -137,7 +140,7 @@ function buttonClick(num) {
   if (newResult || screenData === "") {
     newResult = false;
     /* QoL, to prevent beginning the calculation with + etc., automatically put the last answer before it */
-    if (isNaN(num) && num !== "ans") {
+    if (isNaN(num) && !notOperators.includes(num)) {
       screenData = "ans";
     } else {
       screenData = "";
