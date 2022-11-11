@@ -60,14 +60,17 @@
   align-items: center;
 }
 
-#x-width, #y-width {
+#x-width,
+#y-width {
   width: 100px;
 }
-.x-width, .y-width {
+.x-width,
+.y-width {
   margin: 5px;
 }
 
-.x-width > *, .y-width > * {
+.x-width > *,
+.y-width > * {
   display: block;
 }
 
@@ -169,6 +172,32 @@
   left: 4px;
   font-size: 2rem;
   cursor: move;
+}
+
+#cursor-pos {
+  position: absolute;
+  top: 330px;
+  left: 50%;
+  font-size: 1rem;
+  background-color: red;
+  color: white;
+  text-align: center;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: none;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.canvas-div {
+  position: relative;
+  overflow: hidden;
+}
+
+#graph:hover ~ #cursor-pos,
+#cursor-pos:hover {
+  display: flex;
 }
 
 .noselect {

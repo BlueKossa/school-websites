@@ -49,7 +49,12 @@
             <div class="button" onclick="functionClick('RESULT');">&equals;</div>
           </div>
           <div class="graph-body" id="graph-body">
-            <canvas width="480" height="340" class="graph-screen" id="graph"></canvas>
+            <div class="canvas-div">
+              
+              <canvas onmousemove="getPos(event)" width="480" height="340" class="graph-screen" id="graph"></canvas>
+              <div id="cursor-pos">5x</div>
+            </div>
+            
             <div class="graph-buttons">
               <div id="wasm-button" title="Toggle the use of webassembly" onclick="toggleWasm();">🐢</div>
               <div class="x-width">

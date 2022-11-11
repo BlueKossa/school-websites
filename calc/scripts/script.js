@@ -4,12 +4,13 @@ const resultDiv = document.getElementById("result-text");
 const graphDiv = document.getElementById("graph-body");
 const calcDiv = document.getElementById("calc");
 
+const cursorIndicator = document.getElementById("cursor-pos");
+
 // Variables used for graphing, gets the canvas and the context of it
 const canvas = document.getElementById("graph");
 const xWidthDiv = document.getElementById("x-width");
 const yHeightDiv = document.getElementById("y-width");
 const ctx = canvas.getContext("2d");
-
 // Generally allowed keyboard buttons without further functionality
 const allowedButtons = [
   "0",
@@ -78,10 +79,7 @@ function placeAtCursor(char) {
   // If cursormode is off, simply add the char to end of string
   if (!cursorMode) return screenData + char;
   // Move cursorindex by chars length
-  let res =
-    screenData.substring(0, cursorIndex) +
-    char +
-    screenData.substring(cursorIndex);
+  let res = screenData.substring(0, cursorIndex) + char + screenData.substring(cursorIndex);
   cursorIndex += char.length;
   return res;
 }
@@ -169,9 +167,7 @@ function functionClick(func) {
           let x = 1;
           if (screenData[cursorIndex - 1] === "s") x = 3;
           // Delete the character at the cursor
-          screenData =
-            screenData.substring(0, cursorIndex - x) +
-            screenData.substring(cursorIndex);
+          screenData = screenData.substring(0, cursorIndex - x) + screenData.substring(cursorIndex);
           // Move cursor accordingly
           cursorIndex -= x;
         } else {
@@ -294,10 +290,15 @@ function closeCalc() {
 
 // Initialize the graph screen with lines to indicate the x and y axis
 function initializeGraphScreen() {
+  let xWidth = xWidthDiv.value;
+  let yHeight = yHeightDiv.value;
   // Clear screen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
   ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.textAlign = "center";
+  ctx.font = "10px serif";
+  ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   // Draw y axis
   ctx.moveTo(canvas.width / 2, 0);
@@ -311,11 +312,28 @@ function initializeGraphScreen() {
   for (let i = 0; i <= canvas.width; i += 10) {
     ctx.moveTo(i, canvas.height / 2 - 5);
     ctx.lineTo(i, canvas.height / 2 + 5);
+    if (i % 40 === 0 && !(i === 240 || i === 0 || i === 480)) {
+      let x = Math.round((((i - canvas.width / 2) * xWidth) / 10) * 10) / 10;
+      ctx.fillText(
+        x < 1000 && x > -1000 ? x : Math.round(x / 100) / 10 + "k",
+        i,
+        canvas.height / 2 + 5
+      );
+    }
   }
+  ctx.textAlign = "left";
   // Draw lines on the y axis
   for (let i = 0; i <= canvas.height; i += 10) {
     ctx.moveTo(canvas.width / 2 - 5, i);
     ctx.lineTo(canvas.width / 2 + 5, i);
+    if (i % 20 === 0 && !(i === 160 || i === 0 || i === 360)) {
+      let y = Math.round((-((i - canvas.height / 2) * yHeight) / 10 - 10) * 10) / 10;
+      ctx.fillText(
+        y < 1000 && y > -1000 ? y : Math.round(y / 100) / 10 + "k",
+        canvas.width / 2 + 5,
+        i + 4
+      );
+    }
   }
   // Draw the lines
   ctx.stroke();
@@ -433,6 +451,31 @@ document.addEventListener("keydown", (e) => {
       }
   }
 });
+
+function getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top,
+  };
+}
+
+function getPos(evt) {
+  let xMult = xWidthDiv.value / 10;
+  let yMult = yHeightDiv.value / 10;
+  var pos = getMousePos(canvas, evt);
+  let y = evalPoint((pos.x - 235) * xMult);
+  cursorIndicator.style = `left: ${pos.x}px; top: ${165 - y * yMult}px;`;
+  cursorIndicator.innerText = `(${Math.round((pos.x - 235) * xMult * 10)}, ${
+    Math.round(y * 10) / 10
+  })`;
+  console.log(pos);
+}
+
+function evalPoint(x) {
+  let func = fixFunc(screenData, false);
+  return eval(func);
+}
 
 // When all the scripts are loaded, update the screen and initialize the graph screen
 initializeGraphScreen();
