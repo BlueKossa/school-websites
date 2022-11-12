@@ -332,7 +332,7 @@ function initializeGraphScreen() {
     ctx.moveTo(canvas.width / 2 - 5, i);
     ctx.lineTo(canvas.width / 2 + 5, i);
     if (i % 20 === 0 && !(i === 160)) {
-      let y = Math.round((-((i - canvas.height / 2) * yHeight) / 10 - 10) * 10) / 10;
+      let y = Math.round((-((i - canvas.height / 2 + 10) * yHeight) / 10) * 10) / 10;
       ctx.fillText(
         y < 1000 && y > -1000 ? y : Math.round(y / 100) / 10 + "k",
         canvas.width / 2 + 5,
