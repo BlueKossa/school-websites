@@ -347,6 +347,12 @@ function getImports() {
     imports.wbg.__wbg_setlineWidth_64004648773fed7a = function(arg0, arg1) {
         getObject(arg0).lineWidth = arg1;
     };
+    imports.wbg.__wbg_setlineJoin_460906fc18195c47 = function(arg0, arg1, arg2) {
+        getObject(arg0).lineJoin = getStringFromWasm0(arg1, arg2);
+    };
+    imports.wbg.__wbg_setlineCap_81847480524aaabe = function(arg0, arg1, arg2) {
+        getObject(arg0).lineCap = getStringFromWasm0(arg1, arg2);
+    };
     imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
         const ret = getStringFromWasm0(arg0, arg1);
         return addHeapObject(ret);
@@ -354,14 +360,11 @@ function getImports() {
     imports.wbg.__wbg_setstrokeStyle_899ea3720dae323b = function(arg0, arg1) {
         getObject(arg0).strokeStyle = getObject(arg1);
     };
-    imports.wbg.__wbg_setlineJoin_460906fc18195c47 = function(arg0, arg1, arg2) {
-        getObject(arg0).lineJoin = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_setlineCap_81847480524aaabe = function(arg0, arg1, arg2) {
-        getObject(arg0).lineCap = getStringFromWasm0(arg1, arg2);
-    };
     imports.wbg.__wbg_stroke_85dee7d87c4a6ead = function(arg0) {
         getObject(arg0).stroke();
+    };
+    imports.wbg.__wbg_closePath_d0ab75d4def749a2 = function(arg0) {
+        getObject(arg0).closePath();
     };
     imports.wbg.__wbindgen_debug_string = function(arg0, arg1) {
         const ret = debugString(getObject(arg1));
