@@ -5,6 +5,7 @@ const graphDiv = document.getElementById("graph-body");
 const calcDiv = document.getElementById("calc");
 
 const cursorIndicator = document.getElementById("cursor-pos");
+const derivativeLine = document.getElementById("derivative");
 
 // Variables used for graphing, gets the canvas and the context of it
 const canvas = document.getElementById("graph");
@@ -58,6 +59,8 @@ let underscore = false;
 let graphState = false;
 // Boolean to check if webassembly is enabled
 let wasmMode = false;
+
+let coordPaused = false;
 
 // Imports a rust written function to draw graphs using webassembly
 const { draw_fast } = wasm_bindgen;
@@ -298,7 +301,7 @@ function initializeGraphScreen() {
   // Clear screen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.strokeStyle = "#15212ebb";
   ctx.textAlign = "center";
   ctx.font = "10px serif";
   ctx.textBaseline = "top";
@@ -309,7 +312,6 @@ function initializeGraphScreen() {
   // Draw x axis
   ctx.moveTo(0, canvas.height / 2);
   ctx.lineTo(canvas.width, canvas.height / 2);
-  ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = 2;
   // Draw lines on the x axis
   for (let i = 0; i <= canvas.width; i += 10) {
@@ -329,7 +331,7 @@ function initializeGraphScreen() {
   for (let i = 0; i <= canvas.height; i += 10) {
     ctx.moveTo(canvas.width / 2 - 5, i);
     ctx.lineTo(canvas.width / 2 + 5, i);
-    if (i % 20 === 0 && !(i === 160 || i === 0 || i === 360)) {
+    if (i % 20 === 0 && !(i === 160)) {
       let y = Math.round((-((i - canvas.height / 2) * yHeight) / 10 - 10) * 10) / 10;
       ctx.fillText(
         y < 1000 && y > -1000 ? y : Math.round(y / 100) / 10 + "k",
@@ -347,20 +349,22 @@ function initializeGraphScreen() {
 function calcGraph(func) {
   let start = performance.now();
   // Fix the function to be compatible with the eval function
-  func = fixFunc(func, true);
+
   // Clear the screen
   initializeGraphScreen();
   // Check if wasm mode is on, if it is, use the wasm function, otherwise use the js function
   if (wasmMode) {
+    func = fixFunc(func, true);
     draw_fast(func, ans);
   } else {
+    func = fixFunc(func, false);
     // Configurate the line style
     ctx.beginPath();
     let canvasHeight = canvas.height;
     let canvasWidth = canvas.width;
     let interval = canvasWidth / 10000;
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "red";
+    ctx.strokeStyle = "#1b242e93";
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
     let x = (-canvasWidth / 2) * (xWidthDiv.value / 10);
@@ -388,11 +392,11 @@ function calcGraph(func) {
   console.log(end - start);
 }
 
-function fixFunc(func) {
+function fixFunc(func, wasm) {
   // Replace potential _ with nothing
   func = func.replace("_", "");
   // Replace ^ with the programmatic equivalent, required for javascript eval but not the rust function
-  if (!wasmMode) {
+  if (!wasm) {
     func = func.replaceAll("^", "**");
   }
   // Replace the decimal separator , with the programmatic standard .
@@ -456,28 +460,73 @@ document.addEventListener("keydown", (e) => {
 });
 
 function getMousePos(canvas, evt) {
-  var rect = canvas.getBoundingClientRect();
-  return {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top,
-  };
+  let rect = canvas.getBoundingClientRect();
+  return evt.clientX - rect.left - 5;
 }
 
 function getPos(evt) {
+  let x = getMousePos(canvas, evt);
   let xMult = xWidthDiv.value / 10;
   let yMult = yHeightDiv.value / 10;
-  var pos = getMousePos(canvas, evt);
-  let y = evalPoint((pos.x - 235) * xMult);
-  cursorIndicator.style = `left: ${pos.x}px; top: ${165 - y * yMult}px;`;
-  cursorIndicator.innerText = `(${Math.round((pos.x - 235) * xMult * 10)}, ${
-    Math.round(y * 10) / 10
-  })`;
-  console.log(pos);
+  let y = evalPoint((x - 235) * xMult);
+  if (y === undefined || 160 - y / yMult >= 400 || 160 - y / yMult <= -60) {
+    return;
+  }
+  let angle = calcDerivative((x - 235) * xMult, xMult, yMult);
+  console.log(angle);
+  if (!coordPaused) {
+    cursorIndicator.style = `left: ${x}px; top: ${165 - y / yMult}px;`;
+    cursorIndicator.innerText = `(${Math.round((x - 235) * xMult * 10) / 10}, ${
+      Math.round(y * 10) / 10
+    })`;
+    derivativeLine.style = `transform: rotate(${angle}deg); left: ${x - 695}px; top: ${
+      170 - y / yMult
+    }px;`;
+  }
 }
 
+function togglePause() {
+  cursorIndicator.classList.toggle("paused");
+  coordPaused = !coordPaused;
+}
+
+function toggleDer() {
+  derivativeLine.classList.toggle("hidden");
+}
+
+function toggleCoord() {
+  cursorIndicator.classList.toggle("hidden");
+}
+
+function calcAngleDegrees(x) {
+  return (Math.atan(x) * 180) / Math.PI;
+}
+
+function calcDerivative(x, xMult, yMult) {
+  let h = 0.00000000001;
+  let pos1 = evalPoint(x + h);
+  let pos2 = evalPoint(x - h);
+  let derivative = Math.round(((pos1 - pos2) / (2 * h)) * (xMult / yMult) * 100) / 100;
+  let angle = -calcAngleDegrees(derivative);
+  return angle;
+}
+
+/* 
+  y = kx + m
+  y = der * x + m
+  func x = der * x + m
+  func x - der * x = m
+ */
+
 function evalPoint(x) {
-  let func = fixFunc(screenData, false);
-  return eval(func);
+  try {
+    let func = fixFunc(screenData, false);
+    let y = eval(func);
+    if (isNaN(y) || !isFinite(y)) {
+      return;
+    }
+    return y;
+  } catch (e) {}
 }
 
 // When all the scripts are loaded, update the screen and initialize the graph screen

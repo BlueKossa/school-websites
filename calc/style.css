@@ -188,6 +188,7 @@
   display: none;
   z-index: 1000;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .canvas-div {
