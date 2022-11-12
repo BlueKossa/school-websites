@@ -473,7 +473,6 @@ function getPos(evt) {
     return;
   }
   let angle = calcDerivative((x - 235) * xMult, xMult, yMult);
-  console.log(angle);
   if (!coordPaused) {
     cursorIndicator.style = `left: ${x}px; top: ${165 - y / yMult}px;`;
     cursorIndicator.innerText = `(${Math.round((x - 235) * xMult * 10) / 10}, ${
