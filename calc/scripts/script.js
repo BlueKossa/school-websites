@@ -459,20 +459,25 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+// Functions that gets the cursors position on the graph
 function getMousePos(canvas, evt) {
   let rect = canvas.getBoundingClientRect();
   return evt.clientX - rect.left - 5;
 }
 
+// Function that handles the mouse movement, moves cursor and
 function getPos(evt) {
   let x = getMousePos(canvas, evt);
   let xMult = xWidthDiv.value / 10;
   let yMult = yHeightDiv.value / 10;
   let y = evalPoint((x - 235) * xMult);
+  // If the cursor is way outside of the screen, don't draw it
   if (y === undefined || 160 - y / yMult >= 400 || 160 - y / yMult <= -60) {
     return;
   }
+  // Calculate the angle of the derivative
   let angle = calcDerivative((x - 235) * xMult, xMult, yMult);
+  // If the point is not paused, move the cursor and derivative
   if (!coordPaused) {
     cursorIndicator.style = `left: ${x}px; top: ${165 - y / yMult}px;`;
     cursorIndicator.innerText = `(${Math.round((x - 235) * xMult * 10) / 10}, ${
@@ -484,39 +489,42 @@ function getPos(evt) {
   }
 }
 
+// Toggles the paused state of the cursor
 function togglePause() {
   cursorIndicator.classList.toggle("paused");
   coordPaused = !coordPaused;
 }
 
+// Toggle the derivative line
 function toggleDer() {
   derivativeLine.classList.toggle("hidden");
 }
 
+// Toggle the coordinate dot
 function toggleCoord() {
   cursorIndicator.classList.toggle("hidden");
 }
 
+// Calculate angle
 function calcAngleDegrees(x) {
   return (Math.atan(x) * 180) / Math.PI;
 }
 
+// Calculate derivative
 function calcDerivative(x, xMult, yMult) {
+  // Really small h value, derivative is not exact but close enough to visualize most of the time
   let h = 0.00000000001;
+  // F(a+h) - F(a-h) / 2h, formula for approximating the derivative
   let pos1 = evalPoint(x + h);
   let pos2 = evalPoint(x - h);
   let derivative = Math.round(((pos1 - pos2) / (2 * h)) * (xMult / yMult) * 100) / 100;
+  // Get the angle from the derivative
   let angle = -calcAngleDegrees(derivative);
+  // Return the calculated angle
   return angle;
 }
 
-/* 
-  y = kx + m
-  y = der * x + m
-  func x = der * x + m
-  func x - der * x = m
- */
-
+// Calculate a certain point on the graph, x is used for eval
 function evalPoint(x) {
   try {
     let func = fixFunc(screenData, false);
