@@ -221,6 +221,7 @@
   pointer-events: none;
 }
 
+/* Important to override anything else */
 .hidden {
   display: none !important;
 }
@@ -237,5 +238,5 @@
 
 @font-face {
   font-family: "Calc"; /*a name to be used later*/
-  src: url("assets/fonts/calcFont.ttf"); /*URL to font*/
+  src: url("../assets/fonts/calcFont.ttf"); /*URL to font*/
 }

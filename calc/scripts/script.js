@@ -60,14 +60,16 @@ let graphState = false;
 // Boolean to check if webassembly is enabled
 let wasmMode = false;
 
+// Boolean to check if the cursor should stay in place or not
 let coordPaused = false;
 
-// Imports a rust written function to draw graphs using webassembly
+// Imports a rust written function compiled to webassembly for drawing graphs faster than js
 const { draw_fast } = wasm_bindgen;
 async function importWasm() {
   await wasm_bindgen("./wasm/eval_bg.wasm");
 }
 
+// Imports the wasm
 importWasm();
 
 // Button to toggle between wasm mode, which is faster, and javascript mode.
