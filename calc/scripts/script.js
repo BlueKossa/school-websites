@@ -63,6 +63,8 @@ let wasmMode = false;
 // Boolean to check if the cursor should stay in place or not
 let coordPaused = false;
 
+let savedGraph = "";
+
 // Imports a rust written function compiled to webassembly for drawing graphs faster than js
 const { draw_fast } = wasm_bindgen;
 async function importWasm() {
@@ -391,6 +393,7 @@ function calcGraph(func) {
     ctx.closePath();
   }
   let end = performance.now();
+  savedGraph = func;
   console.log(end - start);
 }
 
@@ -529,7 +532,7 @@ function calcDerivative(x, xMult, yMult) {
 // Calculate a certain point on the graph, x is used for eval
 function evalPoint(x) {
   try {
-    let func = fixFunc(screenData, false);
+    let func = fixFunc(savedGraph, false);
     let y = eval(func);
     if (isNaN(y) || !isFinite(y)) {
       return;
