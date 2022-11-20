@@ -497,6 +497,7 @@ function getPos(evt) {
 // Toggles the paused state of the cursor
 function togglePause() {
   cursorIndicator.classList.toggle("paused");
+  derivativeLine.classList.toggle("paused");
   coordPaused = !coordPaused;
 }
 

@@ -199,16 +199,13 @@
   white-space: nowrap;
 }
 
-#cursor-pos.paused {
-  display: block;
-}
-
 .canvas-div {
   position: relative;
   overflow: hidden;
 }
 
-#graph:hover ~ #cursor-pos {
+#graph:hover ~ #cursor-pos,
+#graph:hover ~ #derivative {
   display: block;
 }
 
@@ -217,12 +214,18 @@
   width: 1400px;
   height: 2px;
   background-color: var(--der-color);
-  display: block;
+  display: none;
   pointer-events: none;
 }
 
+#cursor-pos.paused,
+#derivative.paused {
+  display: block;
+}
+
 /* Important to override anything else */
-.hidden {
+#cursor-pos.hidden,
+#derivative.hidden {
   display: none !important;
 }
 
